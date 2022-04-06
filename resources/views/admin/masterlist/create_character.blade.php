@@ -115,10 +115,12 @@
             {!! Form::text('sale_value', old('sale_value'), ['class' => 'form-control']) !!}
         </div>
     </div>
-    <div class="form-group">
-        {!! Form::checkbox('commercial_permissions', 1, old('commercial_permissions'), ['class' => 'form-check-input', 'data-toggle' => 'toggle', 'id' => 'commercial']) !!}
-        {!! Form::label('commercial_permissions', 'Commercial Permissions', ['class' => 'form-check-label ml-3']) !!}
-    </div>
+    @if(Settings::get('commercial_permissions_visible'))
+        <div class="form-group">
+            {!! Form::checkbox('commercial_permissions', 1, old('commercial_permissions'), ['class' => 'form-check-input', 'data-toggle' => 'toggle', 'id' => 'commercial']) !!}
+            {!! Form::label('commercial_permissions', 'Commercial Permissions', ['class' => 'form-check-label ml-3']) !!}
+        </div>
+    @endif
     <div class="form-group">
         {!! Form::label('On Transfer Cooldown Until (Optional)') !!}
         {!! Form::text('transferrable_at', old('transferrable_at'), ['class' => 'form-control', 'id' => 'datepicker']) !!}

@@ -103,6 +103,8 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
+        $this->addSiteSetting('commercial_permissions_visible', 1, '0: Characters\' commerical permssions are disabled, 1: Characters\' commerical permssions are inabled and visible. (All characters created when this feature is disabled will have commericial permissions set to "none".)');
+
         $this->line("\nSite settings up to date!");
 
     }
