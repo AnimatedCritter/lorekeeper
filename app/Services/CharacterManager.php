@@ -198,6 +198,7 @@ class CharacterManager extends Service
             $characterData['is_giftable'] = isset($data['is_giftable']);
             $characterData['is_visible'] = isset($data['is_visible']);
             $characterData['sale_value'] = isset($data['sale_value']) ? $data['sale_value'] : 0;
+            $characterData['commercial_permissions'] = isset($data['commercial_permissions']);
             $characterData['is_gift_art_allowed'] = 0;
             $characterData['is_gift_writing_allowed'] = 0;
             $characterData['is_trading'] = 0;
@@ -1108,6 +1109,7 @@ class CharacterManager extends Service
             $characterData['is_tradeable'] = isset($data['is_tradeable']);
             $characterData['is_giftable'] = isset($data['is_giftable']);
             $characterData['sale_value'] = isset($data['sale_value']) ? $data['sale_value'] : 0;
+            $characterData['commercial_permissions'] = isset($data['commercial_permissions']);
             $characterData['transferrable_at'] = isset($data['transferrable_at']) ? $data['transferrable_at'] : null;
             if($character->is_myo_slot) $characterData['name'] = (isset($data['name']) && $data['name']) ? $data['name'] : null;
 
@@ -1158,6 +1160,11 @@ class CharacterManager extends Service
                 $result[] = 'sale value';
                 $old['sale_value'] = $character->sale_value;
                 $new['sale_value'] = $characterData['sale_value'];
+            }
+            if($characterData['commercial_permissions'] != $character->commercial_permissions) {
+                $result[] = 'commercial status';
+                $old['commercial_permissions'] = $character->commercial_permissions;
+                $new['commercial_permissions'] = $characterData['commercial_permissions'];
             }
             if($characterData['transferrable_at'] != $character->transferrable_at) {
                 $result[] = 'transfer cooldown';
@@ -2233,6 +2240,7 @@ is_object($sender) ? $sender->id : null,
             $request->character->is_tradeable = isset($data['is_tradeable']);
             $request->character->is_giftable = isset($data['is_giftable']);
             $request->character->sale_value = isset($data['sale_value']) ? $data['sale_value'] : 0;
+            $request->character->commercial_permissions = isset($data['commercial_permissions']);
 
             // Invalidate old image if desired
             if(isset($data['invalidate_old']))

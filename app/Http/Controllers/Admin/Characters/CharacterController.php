@@ -110,7 +110,7 @@ class CharacterController extends Controller
         $data = $request->only([
             'user_id', 'owner_url', 'character_category_id', 'number', 'slug',
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
-            'sale_value', 'transferrable_at', 'use_cropper',
+            'sale_value', 'commercial_permissions', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
             'designer_id', 'designer_url',
             'artist_id', 'artist_url',
@@ -140,7 +140,7 @@ class CharacterController extends Controller
         $data = $request->only([
             'user_id', 'owner_url', 'name',
             'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
-            'sale_value', 'transferrable_at', 'use_cropper',
+            'sale_value', 'commercial_permissions', 'transferrable_at', 'use_cropper',
             'x0', 'x1', 'y0', 'y1',
             'designer_id', 'designer_url',
             'artist_id', 'artist_url',
@@ -208,7 +208,7 @@ class CharacterController extends Controller
         $request->validate(Character::$updateRules);
         $data = $request->only([
             'character_category_id', 'number', 'slug',
-            'is_giftable', 'is_tradeable', 'is_sellable', 'sale_value',
+            'is_giftable', 'is_tradeable', 'is_sellable', 'commercial_permissions', 'sale_value',
             'transferrable_at'
         ]);
         $this->character = Character::where('slug', $slug)->first();
@@ -236,7 +236,7 @@ class CharacterController extends Controller
         $request->validate(Character::$myoRules);
         $data = $request->only([
             'name',
-            'is_giftable', 'is_tradeable', 'is_sellable', 'sale_value',
+            'is_giftable', 'is_tradeable', 'is_sellable', 'commercial_permissions', 'sale_value',
             'transferrable_at'
         ]);
         $this->character = Character::where('is_myo_slot', 1)->where('id', $id)->first();

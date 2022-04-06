@@ -22,6 +22,7 @@
     <div class="col-lg-3 col-4"><h5>Sale Value</h5></div>
     <div class="col-lg-9 col-8">{{ Config::get('lorekeeper.settings.currency_symbol') }}{{ $character->sale_value }}</div>
 </div>
+<h5><i class="text-{{ $character->commercial_permissions ? 'success far fa-circle' : 'danger fas fa-times'  }} fa-fw mr-2"></i> {{ $character->commercial_permissions ? 'Has' : 'No'  }} commercial rights</h5>
 @if($character->transferrable_at && $character->transferrable_at->isFuture())
     <div class="row">
         <div class="col-lg-3 col-4"><h5>Cooldown</h5></div>
