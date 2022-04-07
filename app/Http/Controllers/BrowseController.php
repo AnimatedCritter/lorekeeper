@@ -142,6 +142,7 @@ class BrowseController extends Controller
         if($request->get('is_sellable')) $query->where('is_sellable', 1);
         if($request->get('is_tradeable')) $query->where('is_tradeable', 1);
         if($request->get('is_giftable')) $query->where('is_giftable', 1);
+        if($request->get('commercial_permissions')) $query->where('commercial_permissions', 1);
 
         if($request->get('owner')) {
             $owner = User::find($request->get('owner'));
@@ -284,6 +285,7 @@ class BrowseController extends Controller
         if($request->get('is_sellable')) $query->where('is_sellable', 1);
         if($request->get('is_tradeable')) $query->where('is_tradeable', 1);
         if($request->get('is_giftable')) $query->where('is_giftable', 1);
+        if($request->get('commercial_permissions')) $query->where('commercial_permissions', 1);
 
         if($request->get('owner')) {
             $owner = User::find($request->get('owner'));
@@ -422,6 +424,7 @@ class BrowseController extends Controller
         if($request->get('is_sellable')) $query->where('is_sellable', 1);
         if($request->get('is_tradeable')) $query->where('is_tradeable', 1);
         if($request->get('is_giftable')) $query->where('is_giftable', 1);
+        if($request->get('commercial_permissions')) $query->where('commercial_permissions', 1);
 
         if($request->get('owner')) {
             $owner = User::find($request->get('owner'));
