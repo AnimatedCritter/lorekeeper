@@ -62,6 +62,9 @@ class UserService extends Service
         $user->profile()->create([
             'user_id' => $user->id
         ]);
+        $user->terms()->create([
+            'user_id' => $user->id
+        ]);
 
         return $user;
     }

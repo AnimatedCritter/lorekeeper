@@ -46,6 +46,14 @@
     <div class="card mb-3" style="clear:both;">
         <div class="card-body">
             {!! $user->profile->parsed_text !!}
+
+            @if(isset($user->terms->parsed_text))
+                <p class="text-right text-capitalize mb-0"><a href="#terms" data-toggle="collapse">{!! $user->name !!}'s Design Terms</a></p>
+
+                <div id="terms" class="collapse pb-0">
+                        {!! $user->terms->parsed_text !!}
+                </div>
+            @endif
         </div>
     </div>
 @endif

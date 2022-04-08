@@ -102,6 +102,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get user design terms data.
+     */
+    public function terms()
+    {
+        return $this->hasOne('App\Models\User\UserTerms');
+    }
+
+    /**
      * Get the user's aliases.
      */
     public function aliases()

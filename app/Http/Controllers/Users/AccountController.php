@@ -67,6 +67,22 @@ class AccountController extends Controller
         flash('Profile updated successfully.')->success();
         return redirect()->back();
     }
+    
+    /**
+     * Edits the user's design terms.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postTerms(Request $request)
+    {
+        Auth::user()->terms->update([
+            'text' => $request->get('text'),
+            'parsed_text' => parse($request->get('text'))
+        ]);
+        flash('Design terms updated successfully.')->success();
+        return redirect()->back();
+    }
 
     /**
      * Edits the user's avatar.

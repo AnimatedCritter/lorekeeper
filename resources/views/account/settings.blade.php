@@ -37,6 +37,21 @@
     {!! Form::close() !!}
 </div>
 
+
+<div class="card p-3 mb-2">
+    <h3>User Design Terms</h3>
+    <p>These terms will be visible to all users. Please note that users are not bound to these terms unless you have recieved an electronic signature from the user in question. You are responsible to obtain and record all desired e-signatures.</p>
+    {!! Form::open(['url' => 'account/terms']) !!}
+        <div class="form-group">
+            {!! Form::label('text', 'Custom Terms') !!}
+            {!! Form::textarea('text', Auth::user()->terms->text, ['class' => 'form-control wysiwyg']) !!}
+        </div>
+        <div class="text-right">
+            {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
+        </div>
+    {!! Form::close() !!}
+</div>
+
 <div class="card p-3 mb-2">
     <h3>Birthday Publicity</h3>
     {!! Form::open(['url' => 'account/dob']) !!}
