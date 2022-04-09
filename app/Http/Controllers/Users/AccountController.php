@@ -77,6 +77,7 @@ class AccountController extends Controller
     public function postTerms(Request $request)
     {
         Auth::user()->terms->update([
+            'url' => $request->get('url'),
             'text' => $request->get('text'),
             'parsed_text' => parse($request->get('text'))
         ]);

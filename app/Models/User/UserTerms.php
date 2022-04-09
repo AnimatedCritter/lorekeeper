@@ -13,7 +13,7 @@ class UserTerms extends Model
      * @var array
      */
     protected $fillable = [
-        'text', 'parsed_text'
+        'url', 'text', 'parsed_text'
     ];
 
     /**

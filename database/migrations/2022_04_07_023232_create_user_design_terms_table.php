@@ -15,9 +15,10 @@ class CreateUserDesignTermsTable extends Migration
     {
         Schema::create('user_terms', function (Blueprint $table) {
             $table->integer('user_id')->unsigned()->index();
+            $table->text('url')->nullable()->default(null);
             $table->text('text')->nullable()->default(null);
             $table->text('parsed_text')->nullable()->default(null);
-            $table->timestamps();
+            $table->timestamp('last_updated', $precision = 0);
         });
     }
 
@@ -28,6 +29,6 @@ class CreateUserDesignTermsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user-terms');
+        Schema::dropIfExists('user_terms');
     }
 }
