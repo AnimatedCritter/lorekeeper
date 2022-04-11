@@ -1165,6 +1165,10 @@ class CharacterManager extends Service
                 $result[] = 'commercial status';
                 $old['commercial_permissions'] = $character->commercial_permissions;
                 $new['commercial_permissions'] = $characterData['commercial_permissions'];
+                
+                Notifications::create('COMMERCIAL_TERMS_UPDATED', $character->user, [
+                    'character_slug' => $character->slug
+                ]);
             }
             if($characterData['transferrable_at'] != $character->transferrable_at) {
                 $result[] = 'transfer cooldown';

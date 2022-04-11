@@ -407,4 +407,11 @@ return [
         'message' => '<a href="{sender_url}">{sender}</a> has added you as a participant on a gallery submission. (<a href="{url}">View Submission</a>)',
         'url' => 'gallery/view/{submission_id}'
     ],
+
+    // COMMERCIAL_TERMS_UPDATED
+    1000 => [
+        'name' => 'Commercial Terms Updated',
+        'message' => '<a href="{url}">{character_slug}</a> has had its commercial permissions changed. (<a href="{url}">View Character</a>)',
+        'url' => 'character/{character_slug}'
+    ],
 ];
