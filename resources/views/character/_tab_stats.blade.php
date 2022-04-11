@@ -15,6 +15,9 @@
 
 <hr />
 
+@if(Settings::get('commercial_permissions_visible'))
+    <h5><i class="text-{{ $character->commercial_permissions ? 'success far fa-circle' : 'danger fas fa-times'  }} fa-fw mr-2"></i> {{ $character->commercial_permissions ? 'Has' : 'No'  }} commercial rights</h5>
+@endif
 <h5><i class="text-{{ $character->is_giftable ? 'success far fa-circle' : 'danger fas fa-times'  }} fa-fw mr-2"></i> {{ $character->is_giftable ? 'Can' : 'Cannot'  }} be gifted</h5>
 <h5><i class="text-{{ $character->is_tradeable ? 'success far fa-circle' : 'danger fas fa-times'  }} fa-fw mr-2"></i> {{ $character->is_tradeable ? 'Can' : 'Cannot'  }} be traded</h5>
 <h5><i class="text-{{ $character->is_sellable ? 'success far fa-circle' : 'danger fas fa-times'  }} fa-fw mr-2"></i> {{ $character->is_sellable ? 'Can' : 'Cannot'  }} be sold</h5>
@@ -22,9 +25,6 @@
     <div class="col-lg-3 col-4"><h5>Sale Value</h5></div>
     <div class="col-lg-9 col-8">{{ Config::get('lorekeeper.settings.currency_symbol') }}{{ $character->sale_value }}</div>
 </div>
-@if(Settings::get('commercial_permissions_visible'))
-    <h5><i class="text-{{ $character->commercial_permissions ? 'success far fa-circle' : 'danger fas fa-times'  }} fa-fw mr-2"></i> {{ $character->commercial_permissions ? 'Has' : 'No'  }} commercial rights</h5>
-@endif
 @if($character->transferrable_at && $character->transferrable_at->isFuture())
     <div class="row">
         <div class="col-lg-3 col-4"><h5>Cooldown</h5></div>
