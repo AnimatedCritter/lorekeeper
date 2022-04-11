@@ -55,19 +55,23 @@
                 </div>
             @endif
 
-            @if(isset($user->terms->url))
-                <p class="text-right text-capitalize mb-0"><a href="#externalTerms" data-toggle="collapse">{!! $user->name !!}'s Design Terms &nbsp;<i class="fas fa-external-link-alt"></i></a></p>
+            @if(Settings::get('external_terms') != 0)
+                @if(Settings::get('external_terms') == 1 && isset($user->terms->url))
+                    <p class="text-right text-capitalize mb-0"><a href="#externalTerms" data-toggle="collapse">{!! $user->name !!}'s Design Terms &nbsp;<i class="fas fa-external-link-alt"></i></a></p>
 
-                <div id="externalTerms" class="collapse pb-0">
+                    <div id="externalTerms" class="collapse pb-0">
 
-                    <div class="d-flex align-items-end flex-column">
-                        <div class="d-inline alert alert-warning mt-3 text-right"><i class="fas fa-exclamation-triangle mr-auto"></i> {{ config('lorekeeper.settings.site_name', 'Lorekeeper') }} has no control over and is not responsible for the content on external sites. <br> Do you still want to visit this site?</div>
-                        <div class="d-flex">
-                            <a class="btn btn-success mr-2" href="{!! $user->terms->url !!}" target="_blank">Yes, Visit the Site</a>
-                            <a class="btn btn-secondary" href="#externalTerms" data-toggle="collapse">No, Stay on {{ config('lorekeeper.settings.site_name', 'Lorekeeper') }}</a>
+                        <div class="d-flex align-items-end flex-column">
+                            <div class="d-inline alert alert-warning mt-3 text-right"><i class="fas fa-exclamation-triangle mr-auto"></i> {{ config('lorekeeper.settings.site_name', 'Lorekeeper') }} has no control over and is not responsible for the content on external sites. <br> Do you still want to visit this site?</div>
+                            <div class="d-flex">
+                                <a class="btn btn-success mr-2" href="{!! $user->terms->url !!}" target="_blank">Yes, Visit the Site</a>
+                                <a class="btn btn-secondary" href="#externalTerms" data-toggle="collapse">No, Stay on {{ config('lorekeeper.settings.site_name', 'Lorekeeper') }}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @elseif(Settings::get('external_terms') == 2 && isset($user->terms->url))
+                    <p class="text-right text-capitalize mb-0"><a href="{!! $user->terms->url !!}" target="_blank">{!! $user->name !!}'s Design Terms &nbsp;<i class="fas fa-external-link-alt"></i></a></p>
+                @endif
             @endif
         </div>
     </div>

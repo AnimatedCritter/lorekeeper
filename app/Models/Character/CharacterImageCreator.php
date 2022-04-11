@@ -3,6 +3,7 @@
 namespace App\Models\Character;
 
 use Config;
+use Settings;
 use DB;
 use App\Models\Model;
 use App\Models\User\User;
@@ -100,7 +101,14 @@ class CharacterImageCreator extends Model
             $terms = UserTerms::find($this->user_id);
             if ($terms->url != null && $terms->parsed_text != null)
             {
-                return '<a href="'.$terms->url.'">'.$terms->url.'</a><br><br>'.$terms->parsed_text;
+                if(Settings::get('external_terms') == 0)
+                    return $terms->parsed_text;
+                else if(Settings::get('external_terms') == 1)
+                    return '<a href="'.$terms->url.'" target="_blank" onclick="return confirm(\''
+                    .config('lorekeeper.settings.site_name', 'Lorekeeper').
+                     '&nbsp;has no control over and is not responsible for the content on external sites. Do you still want to visit this site?\')">'.$terms->url.'</a>'.$terms->parsed_text;
+                else
+                    return '<a href="'.$terms->url.'" target="_blank">'.$terms->url.'</a>'.$terms->parsed_text;
             }
             else if ($terms->url == null && $terms->parsed_text != null)
             {
@@ -108,7 +116,14 @@ class CharacterImageCreator extends Model
             }
             else if ($terms->url != null && $terms->parsed_text == null)
             {
-                return '<a href="'.$terms->url.'">'.$terms->url.'</a>';
+                if(Settings::get('external_terms') == 0)
+                    return '<i>'.$user->displayName.'&nbsp;has not submitted their terms to the site.</i>';
+                else if(Settings::get('external_terms') == 1)
+                    return '<a href="'.$terms->url.'" target="_blank" onclick="return confirm(\''
+                    .config('lorekeeper.settings.site_name', 'Lorekeeper').
+                     '&nbsp;has no control over and is not responsible for the content on external sites. Do you still want to visit this site?\')">'.$terms->url.'</a>';
+                else
+                    return '<a href="'.$terms->url.'" target="_blank">'.$terms->url.'</a>';
             }
             else if ($terms->url == null && $terms->parsed_text == null)
             {
