@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Users;
 
 use Auth;
+use DB;
 use File;
 use Image;
+use Notifications;
 
+use App\Models\Character\Character;
+use App\Models\Character\CharacterImageCreator;
 use App\Models\User\User;
 use App\Models\User\UserAlias;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -82,6 +87,23 @@ class AccountController extends Controller
             'parsed_text' => parse($request->get('text'))
         ]);
         flash('Design terms updated successfully.')->success();
+        $notify = $request->get('notify');
+            $characterId = CharacterImageCreator::where('user_id', Auth::user()->id)->where('type', 'Designer')->get();
+            $ownerId = Character::whereIn('character_image_id', $characterId->pluck('character_image_id'))->get();
+            $owner = User::whereIn('id', $ownerId->pluck('user_id'))->get();
+
+        if($notify == 1) {
+            foreach ($owner as $owner) {
+                if (Auth::user()->id == $owner->id) {
+                    continue;
+                }
+                Notifications::create('DESIGN_TERMS_UPDATED', $owner, [
+                    'designer_url' => Auth::user()->url,
+                    'designer' => Auth::user()->name
+                ]);
+            }
+            flash('Design owners have been notified!')->success();
+        }
         return redirect()->back();
     }
 

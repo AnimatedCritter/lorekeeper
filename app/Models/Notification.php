@@ -161,4 +161,5 @@ class Notification extends Model
     const GALLERY_SUBMISSION_PARTICIPANT    = 515;
 
     const COMMERCIAL_TERMS_UPDATED    = 1000;
+    const DESIGN_TERMS_UPDATED    = 1001;
 }

@@ -414,4 +414,11 @@ return [
         'message' => '<a href="{url}">{character_slug}</a> has had its commercial permissions changed. (<a href="{url}">View Character</a>)',
         'url' => 'character/{character_slug}'
     ],
+
+    // DESIGN_TERMS_UPDATED
+    1001 => [
+        'name' => 'Design Terms Updated',
+        'message' => 'Characters designed by (<a href="{designer_url}">{designer}</a>) have had their terms updated. (<a href="{url}">View Characters</a>)',
+        'url' => 'characters'
+    ],
 ];

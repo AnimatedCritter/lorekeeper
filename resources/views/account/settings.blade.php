@@ -52,6 +52,11 @@
         <div class="form-group">
             {!! Form::label('text', 'Custom, On-Site Terms') !!}
             {!! Form::textarea('text', Auth::user()->terms->text, ['class' => 'form-control wysiwyg']) !!}
+        <br>
+        <div class="form-group text-right">
+            {!! Form::checkbox('notify', 1, Auth::user()->terms->notify, ['class' => 'form-check-input', 'data-toggle' => 'toggle', 'id' => 'notify']) !!}
+            {!! Form::label('notify', 'Notify Owners of These Changes?', ['class' => 'form-check-label ml-3']) !!}
+        </div>
         </div>
         <div class="text-right">
             {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
