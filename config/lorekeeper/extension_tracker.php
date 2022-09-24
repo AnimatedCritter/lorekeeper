@@ -12,5 +12,13 @@ return [
     //     'version' => '1.0.0',
     // ],
     
+    'design_terms' => [
+        'key' => 'design_terms',
+        'wiki_key' => 'Design_Terms',
+            'creators' => json_encode([
+            'AnimatedCritter' => 'https://github.com/animatedcritter/',
+        ]),
+        'version' => '1.0.0',
+    ],
 
 ];
