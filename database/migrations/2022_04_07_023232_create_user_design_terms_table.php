@@ -18,7 +18,7 @@ class CreateUserDesignTermsTable extends Migration
             $table->text('url')->nullable()->default(null);
             $table->text('text')->nullable()->default(null);
             $table->text('parsed_text')->nullable()->default(null);
-            $table->timestamp('last_updated', $precision = 0);
+            $table->timestamp('last_updated', $precision = 0)->useCurrent();
         });
     }
 
