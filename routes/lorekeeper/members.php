@@ -60,6 +60,9 @@ Route::group(['prefix' => 'characters', 'namespace' => 'Users'], function() {
     Route::post('transfer/act/{id}', 'CharacterController@postHandleTransfer');
 
     Route::get('myos', 'CharacterController@getMyos');
+
+    Route::get('myos/new', 'CharacterController@getCreateFreeMyo');
+    Route::post('myos/new', 'CharacterController@postCreateFreeMyo');
 });
 
 Route::group(['prefix' => 'bank', 'namespace' => 'Users'], function() {

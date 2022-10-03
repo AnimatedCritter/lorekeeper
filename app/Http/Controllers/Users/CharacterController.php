@@ -47,6 +47,49 @@ class CharacterController extends Controller
     }
 
     /**
+     * Shows the create free MYO slot page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCreateFreeMyo()
+    {
+        return view('home.create_free_myo', [
+            'isMyo' => true,
+            'isFreeMyo' => true,
+        ]);
+    }
+
+    /**
+     * Creates a free MYO slot.
+     *
+     * @param  \Illuminate\Http\Request       $request
+     * @param  App\Services\CharacterManager  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postCreateFreeMyo(Request $request, CharacterManager $service)
+    {
+        $request->validate(Character::$myoRules);
+        $data = $request->only([
+            'user_id', 'owner_url', 'name',
+            'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
+            'sale_value', 'transferrable_at', 'use_cropper',
+            'x0', 'x1', 'y0', 'y1',
+            'designer_id', 'designer_url',
+            'artist_id', 'artist_url',
+            'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
+            'image', 'thumbnail'
+        ]);
+        if ($character = $service->createCharacter($data, Auth::user(), true)) {
+            flash('MYO slot created successfully.')->success();
+            return redirect()->to($character->url.'/approval');
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back()->withInput();
+    }
+
+    /**
      * Shows the user's MYO slots.
      *
      * @return \Illuminate\Contracts\Support\Renderable
