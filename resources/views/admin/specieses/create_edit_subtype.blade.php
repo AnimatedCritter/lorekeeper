@@ -15,9 +15,20 @@
 
 <h3>Basic Information</h3>
 
-<div class="form-group">
-    {!! Form::label('Name') !!}
-    {!! Form::text('name', $subtype->name, ['class' => 'form-control']) !!}
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {!! Form::label('Name') !!}
+            {!! Form::text('name', $subtype->name, ['class' => 'form-control']) !!}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            {!! Form::label('Subtype Free MYO Usable') !!}{!! add_help('This allows users to select this subtype for their free MYO.') !!}
+            <br>
+            {!! Form::checkbox('is_free_myo_usable', 1, $subtype->is_free_myo_usable, ['class' => 'form-check-input', 'data-toggle' => 'toggle', 'id' => 'is_free_myo_usable']) !!}
+        </div>
+    </div>
 </div>
 
 <div class="form-group">

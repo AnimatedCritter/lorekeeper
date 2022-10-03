@@ -71,6 +71,8 @@ class SpeciesService extends Service
 
             $data = $this->populateData($data, $species);
 
+            $species->is_free_myo_usable = isset($data['is_free_myo_usable']);
+
             $image = null;            
             if(isset($data['image']) && $data['image']) {
                 $data['has_image'] = 1;
@@ -209,6 +211,8 @@ class SpeciesService extends Service
 
         try {
             $data = $this->populateSubtypeData($data, $subtype);
+
+            $subtype->is_free_myo_usable = isset($data['is_free_myo_usable']);
 
             $image = null;            
             if(isset($data['image']) && $data['image']) {

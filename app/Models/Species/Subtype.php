@@ -13,7 +13,7 @@ class Subtype extends Model
      * @var array
      */
     protected $fillable = [
-        'species_id', 'name', 'sort', 'has_image', 'description', 'parsed_description'
+        'species_id', 'name', 'sort', 'has_image', 'description', 'parsed_description', 'is_free_myo_usable'
     ];
 
     /**
