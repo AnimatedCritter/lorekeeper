@@ -103,6 +103,12 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
+        $this->addSiteSetting('free_myos_open', 1, '0: Free MYO creations closed, 1: Free MYO creations open.');
+
+        $this->addSiteSetting('free_myos_max_number', 0, 'Optional limit to the number of free MYOs a user can create. Enter "0" to allow users infinite free MYOs.');
+
+        $this->addSiteSetting('free_myos_rarity', 0, 'ID of the max rarity a free MYO allows. Enter "0" for no limitations.');
+
         $this->line("\nSite settings up to date!");
 
     }
