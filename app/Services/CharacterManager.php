@@ -81,9 +81,10 @@ class CharacterManager extends Service
      * @param  array                  $data
      * @param  \App\Models\User\User  $user
      * @param  bool                   $isMyo
+     * @param  bool                   $isFreeMyo
      * @return \App\Models\Character\Character|bool
      */
-    public function createCharacter($data, $user, $isMyo = false)
+    public function createCharacter($data, $user, $isMyo = false, $isFreeMyo = false)
     {
         DB::beginTransaction();
 
@@ -120,7 +121,7 @@ class CharacterManager extends Service
             }
 
             // Create character
-            $character = $this->handleCharacter($data, $isMyo);
+            $character = $this->handleCharacter($data, $isMyo, $isFreeMyo);
             if(!$character) throw new \Exception("Error happened while trying to create character.");
 
             // Create character image
@@ -140,10 +141,13 @@ class CharacterManager extends Service
             // This logs ownership of the character
             $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
 
-            // Update the user's FTO status and character count
+            // Update the user's FTO statusm, character count, and free MYO count
             if(is_object($recipient)) {
                 if(!$isMyo) {
                     $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
+                }
+                if($isFreeMyo) {
+                    $recipient->settings->free_myos_made += 1;
                 }
                 $recipient->settings->save();
             }
@@ -170,9 +174,10 @@ class CharacterManager extends Service
      *
      * @param  array                  $data
      * @param  bool                   $isMyo
+     * @param  bool                   $isFreeMyo
      * @return \App\Models\Character\Character|bool
      */
-    private function handleCharacter($data, $isMyo = false)
+    private function handleCharacter($data, $isMyo = false, $isFreeMyo = false)
     {
         try {
             if($isMyo)
@@ -203,6 +208,7 @@ class CharacterManager extends Service
             $characterData['is_trading'] = 0;
             $characterData['parsed_description'] = parse($data['description']);
             if($isMyo) $characterData['is_myo_slot'] = 1;
+            if($isFreeMyo) $characterData['is_free_myo'] = 1;
 
             $character = Character::create($characterData);
 
