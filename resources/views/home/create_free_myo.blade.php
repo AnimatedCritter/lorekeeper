@@ -41,6 +41,27 @@
     </div>
 {!! Form::close() !!}
 @endif
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title h5 mb-0">Confirm  Creation</span>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>This will create a free MYO slot. You cannot make a new one until a design request(s) are submitted for the current one(s) in your possession
+                    @if($hasMaxNumber)
+                        ,and you can only make a maximum of $maxNumber free slots
+                    @endif
+                . Do you wish to continue?</p>
+                <div class="text-right">
+                    <a href="#" id="formSubmit" class="btn btn-primary">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
