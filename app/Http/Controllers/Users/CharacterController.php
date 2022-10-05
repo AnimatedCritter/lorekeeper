@@ -53,7 +53,13 @@ class CharacterController extends Controller
      */
     public function getCreateFreeMyo()
     {
+        $closed = !Settings::get('free_myos_open');
+        $hasMaxNumber = Settings::get('free_myos_max_number') != 0;
+        $maxNumber = Settings::get('free_myos_max_number');
         return view('home.create_free_myo', [
+            'closed' => $closed,
+            'hasMaxNumber' => $hasMaxNumber,
+            'maxNumber' => $maxNumber,
             'isMyo' => true,
             'isFreeMyo' => true,
         ]);

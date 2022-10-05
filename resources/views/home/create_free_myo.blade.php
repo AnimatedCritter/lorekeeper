@@ -9,7 +9,15 @@
         Create Free MYO 
 </h1>
 
-
+@if($closed)
+    <div class="alert alert-danger">
+        Free MYO slots are currently closed. You cannot make a new MYO slot at this time.
+    </div>
+@elseif($hasMaxNumber && Auth::user()->settings->free_myos_made >= $maxNumber)
+    <div class="alert alert-danger">
+        You have reached the limit of free MYO slots you can create. If you believe this to be an error, please contact a moderator.
+    </div>
+@else 
 {!! Form::open(['url' => 'characters/myos/new', 'id' => 'submissionForm']) !!}
     {{ Form::hidden('name', 'Free MYO') }}
     {{ Form::hidden('user_id', Auth::user()->id) }}
@@ -32,6 +40,7 @@
         <a href="#" class="btn btn-primary" id="submitButton">Create Free MYO</a>
     </div>
 {!! Form::close() !!}
+@endif
 @endsection
 
 @section('scripts')
