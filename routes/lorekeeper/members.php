@@ -63,6 +63,7 @@ Route::group(['prefix' => 'characters', 'namespace' => 'Users'], function() {
 
     Route::get('myos/new', 'CharacterController@getCreateFreeMyo');
     Route::post('myos/new', 'CharacterController@postCreateFreeMyo');
+    Route::get('check-subtype', 'CharacterController@getCreateCharacterMyoSubtype');
 });
 
 Route::group(['prefix' => 'bank', 'namespace' => 'Users'], function() {

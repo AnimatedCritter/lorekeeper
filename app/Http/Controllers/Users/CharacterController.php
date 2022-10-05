@@ -9,6 +9,8 @@ use Auth;
 use Route;
 use Settings;
 use App\Models\User\User;
+use App\Models\Species\Species;
+use App\Models\Species\Subtype;
 use App\Models\Character\Character;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
@@ -56,13 +58,38 @@ class CharacterController extends Controller
         $closed = !Settings::get('free_myos_open');
         $hasMaxNumber = Settings::get('free_myos_max_number') != 0;
         $maxNumber = Settings::get('free_myos_max_number');
+        $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
+        $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
         return view('home.create_free_myo', [
+            'specieses' => ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'subtypes' => ['0' => 'Pick a Species First'],
             'closed' => $closed,
             'hasMaxNumber' => $hasMaxNumber,
             'maxNumber' => $maxNumber,
+            'hasSpeciesUsable' => $hasSpeciesUsable,
+            'hasSubtypeUsable' => $hasSubtypeUsable,
             'isMyo' => true,
             'isFreeMyo' => true,
         ]);
+    }
+
+    /**
+     * Shows the edit image subtype portion of the modal
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getCreateCharacterMyoSubtype(Request $request) {
+      $species = $request->input('species');
+      if(Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0){
+        $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+      } else {
+        $subtypeDropdown = ['0' => 'No Subtypes Available'];
+      };
+      return view('home._create_character_subtype', [
+          'subtypes' => $subtypeDropdown,
+          'isMyo' => $request->input('myo')
+      ]);
     }
 
     /**
