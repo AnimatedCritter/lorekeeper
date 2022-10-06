@@ -109,6 +109,8 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('free_myos_rarity', 0, 'ID of the max rarity a free MYO allows. Enter "0" for no limitations.');
 
+        $this->addSiteSetting('free_myos_require_subtype', 0, '0: Subtypes are optional for free MYOs, 1: Subtypes are mandatory for free MYOs. ');
+
         $this->line("\nSite settings up to date!");
 
     }
