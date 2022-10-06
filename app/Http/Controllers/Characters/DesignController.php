@@ -229,13 +229,13 @@ class DesignController extends Controller
       $r = CharacterDesignUpdate::find($id);
       $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();
       $hasSubtypeUsable = Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0;
-      $noRequiredSubtype = !Settings::get('free_myos_require_subtype');
+      $requireSubtype = Settings::get('free_myos_require_subtype');
       if(!$isFreeMyo){
           $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
       } else {
-          if($hasSubtypeUsable && $noRequiredSubtype){
+          if($hasSubtypeUsable && !$requireSubtype){
             $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
-          } elseif ($hasSubtypeUsable && !$noRequiredSubtype) {
+          } elseif ($hasSubtypeUsable && $requireSubtype) {
             $subtypeDropdown = Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
           } else {
             $subtypeDropdown = ['0' => 'No Subtypes Available'];
