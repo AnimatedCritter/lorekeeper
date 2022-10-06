@@ -12,5 +12,13 @@ return [
     //     'version' => '1.0.0',
     // ],
     
+    'free_myos' => [
+        'key' => 'free_myos',
+        'wiki_key' => 'Free_MYOs',
+            'creators' => json_encode([
+            'AnimatedCritter' => 'https://github.com/animatedcritter/',
+        ]),
+        'version' => '1.0.0',
+    ],
 
 ];
