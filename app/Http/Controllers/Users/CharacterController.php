@@ -60,6 +60,7 @@ class CharacterController extends Controller
         $maxNumber = Settings::get('free_myos_max_number');
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
+        $noRequiredSubtype = !Settings::get('free_myos_require_subtype');
         $inactiveMyo = Character::where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1);
         return view('home.create_free_myo', [
             'specieses' => ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
@@ -69,6 +70,7 @@ class CharacterController extends Controller
             'maxNumber' => $maxNumber,
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
+            'noRequiredSubtype' => $noRequiredSubtype,
             'inactiveMyo' => $inactiveMyo,
             'isMyo' => true,
             'isFreeMyo' => true,
@@ -83,8 +85,12 @@ class CharacterController extends Controller
      */
     public function getCreateCharacterMyoSubtype(Request $request) {
       $species = $request->input('species');
-      if(Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0){
+      $hasSubtypeUsable = Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0;
+      $noRequiredSubtype = !Settings::get('free_myos_require_subtype');
+      if($hasSubtypeUsable && $noRequiredSubtype){
         $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+      } elseif ($hasSubtypeUsable && !$noRequiredSubtype) {
+        $subtypeDropdown = Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
       } else {
         $subtypeDropdown = ['0' => 'No Subtypes Available'];
       };
