@@ -17,6 +17,10 @@
     <div class="alert alert-danger">
         You have reached the limit of free MYO slots you can create. If you believe this to be an error, please contact a moderator.
     </div>
+@elseif($inactiveMyo->count() != 0)
+    <div class="alert alert-danger">
+        You currently have an <a href="{{ url('myo/'.$inactiveMyo->pluck('id')->first()) }}">un-used free MYO slot</a>. Please submit a design request before creating a new slot.
+    </div>
 @else 
 {!! Form::open(['url' => 'characters/myos/new', 'id' => 'submissionForm']) !!}
     {{ Form::hidden('name', 'Free MYO') }}

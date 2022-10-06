@@ -60,6 +60,7 @@ class CharacterController extends Controller
         $maxNumber = Settings::get('free_myos_max_number');
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
+        $inactiveMyo = Character::where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1);
         return view('home.create_free_myo', [
             'specieses' => ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes' => ['0' => 'Pick a Species First'],
@@ -68,6 +69,7 @@ class CharacterController extends Controller
             'maxNumber' => $maxNumber,
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
+            'inactiveMyo' => $inactiveMyo,
             'isMyo' => true,
             'isFreeMyo' => true,
         ]);
