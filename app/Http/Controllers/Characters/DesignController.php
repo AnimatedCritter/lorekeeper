@@ -191,6 +191,7 @@ class DesignController extends Controller
     public function getFeatures($id)
     {
         $r = CharacterDesignUpdate::find($id);
+        $isMyo = Character::where('id', $r->character_id)->pluck('is_myo_slot')->first();  
         $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();  
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
@@ -202,6 +203,7 @@ class DesignController extends Controller
         }
         return view('character.design.features', [
             'request' => $r,
+            'isMyo' => $isMyo,
             'isFreeMyo' => $isFreeMyo,
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
