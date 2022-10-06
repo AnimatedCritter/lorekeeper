@@ -45,8 +45,8 @@
                 {!! Form::label('Subtype (Optional)') !!}{!! add_help('This will lock the slot into a particular subtype. Leave it blank if you would like to choose later. The subtype must match the species selected above, and if no species is specified, the subtype will not be applied.') !!}
                 {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
             </div>
-        @elseif(!$hasSubtypeUsable && !$noRequiredSubtype)
-            <p class="alert alert-danger">No subtypes are currently available to use for free MYOs. Please <a href="{{ url('reports/bug-reports') }}">file a bug report</a>.</p>
+        @else
+            <p class="alert alert-danger">No subtypes are currently available to use for free MYOs.</p>
         @endif
     @else
         {{ Form::hidden('species_id', null) }}
