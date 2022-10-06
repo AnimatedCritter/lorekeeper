@@ -94,6 +94,8 @@ class CharacterManager extends Service
 
             if($isFreeMyo && UserSettings::find($data['user_id'])->pluck('free_myos_made')->first() >= Settings::get('free_myos_max_number') && Settings::get('free_myos_max_number') != 0) throw new \Exception("You have already created the maximum amount of free MYO slots.");
 
+            if($isMyo && $isFreeMyo && Character::where('user_id', $data['user_id'])->where('is_myo_slot', 1)->where('is_free_myo', 1)->count() != 0) throw new \Exception("You currently have un-used free MYO(s). Please submit a design request before creating a new slot.");
+
             if(!$isMyo && Character::where('slug', $data['slug'])->exists()) throw new \Exception("Please enter a unique character code.");
 
             if(!(isset($data['user_id']) && $data['user_id']) && !(isset($data['owner_url']) && $data['owner_url']))
