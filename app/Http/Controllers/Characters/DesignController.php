@@ -191,7 +191,9 @@ class DesignController extends Controller
     public function getFeatures($id)
     {
         $r = CharacterDesignUpdate::find($id);
-        $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();
+        $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();  
+        $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
+        $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
         if(!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) abort(404);
         if(!$isFreeMyo){
             $speciesDropdown = ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
@@ -200,6 +202,9 @@ class DesignController extends Controller
         }
         return view('character.design.features', [
             'request' => $r,
+            'isFreeMyo' => $isFreeMyo,
+            'hasSpeciesUsable' => $hasSpeciesUsable,
+            'hasSubtypeUsable' => $hasSubtypeUsable,
             'specieses' => $speciesDropdown,
             'subtypes' => ['0' => 'No Subtype'] + Subtype::where('species_id','=',$r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'rarities' => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
