@@ -148,7 +148,7 @@ class CharacterManager extends Service
             // This logs ownership of the character
             $this->createLog($user->id, null, $recipientId, $url, $character->id, $isMyo ? 'MYO Slot Created' : 'Character Created', 'Initial upload', 'user');
 
-            // Update the user's FTO statusm, character count, and free MYO count
+            // Update the user's FTO status, character count, and free MYO count
             if(is_object($recipient)) {
                 if(!$isMyo) {
                     $recipient->settings->is_fto = 0; // MYO slots don't affect the FTO status - YMMV
