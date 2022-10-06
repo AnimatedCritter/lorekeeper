@@ -191,11 +191,16 @@ class DesignController extends Controller
     public function getFeatures($id)
     {
         $r = CharacterDesignUpdate::find($id);
+        $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();
         if(!$r || ($r->user_id != Auth::user()->id && !Auth::user()->hasPower('manage_characters'))) abort(404);
-
+        if(!$isFreeMyo){
+            $speciesDropdown = ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+        } else {
+            $speciesDropdown = ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+        }
         return view('character.design.features', [
             'request' => $r,
-            'specieses' => ['0' => 'Select Species'] + Species::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+            'specieses' => $speciesDropdown,
             'subtypes' => ['0' => 'No Subtype'] + Subtype::where('species_id','=',$r->species_id)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'rarities' => ['0' => 'Select Rarity'] + Rarity::orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'features' => Feature::orderBy('name')->pluck('name', 'id')->toArray()
@@ -212,8 +217,19 @@ class DesignController extends Controller
 
       $species = $request->input('species');
       $id = $request->input('id');
+      $r = CharacterDesignUpdate::find($id);
+      $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();
+      if(!$isFreeMyo){
+          $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+      } else {
+          if(Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0){
+            $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+          } else {
+            $subtypeDropdown = ['0' => 'No Subtypes Available'];
+          };
+      };
       return view('character.design._features_subtype', [
-          'subtypes' => ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
+          'subtypes' => $subtypeDropdown,
           'subtype' => $id
       ]);
     }
