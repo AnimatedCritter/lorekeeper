@@ -52,11 +52,7 @@
         {{ Form::hidden('species_id', null) }}
         {{ Form::hidden('subtype_id', null) }}
     @endif
-    @if(Settings::get('free_myos_rarity') != 0)
-        {{ Form::hidden('rarity_id', Settings::get('free_myos_rarity')) }}
-    @else
-        {{ Form::hidden('rarity_id', null) }}
-    @endif
+    {{ Form::hidden('rarity_id', $hasRarity != 0 ? $rarity : null) }}
     {{ Form::hidden('feature_id[]', null) }}
     {{ Form::hidden('feature_data[]', null) }}
     <div class="text-center">

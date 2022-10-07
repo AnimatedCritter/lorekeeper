@@ -62,6 +62,8 @@ class CharacterController extends Controller
         $isGiftable = Settings::get('free_myos_is_giftable');
         $isTradeable = Settings::get('free_myos_is_tradeable');
         $isResellable = Settings::get('free_myos_is_resellable');
+        $hasRarity = Settings::get('free_myos_rarity') != 0;
+        $rarity = Settings::get('free_myos_rarity');
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
         $requireSubtype = Settings::get('free_myos_require_subtype');
@@ -80,6 +82,8 @@ class CharacterController extends Controller
             'isGiftable' => $isGiftable,
             'isTradeable' => $isTradeable,
             'isResellable' => $isResellable,
+            'hasRarity' => $hasRarity,
+            'rarity' => $rarity,
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
             'requireSubtype' => $requireSubtype,
