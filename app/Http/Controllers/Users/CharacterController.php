@@ -59,11 +59,15 @@ class CharacterController extends Controller
         $closed = !Settings::get('free_myos_open');
         $hasMaxNumber = Settings::get('free_myos_max_number') != 0;
         $maxNumber = Settings::get('free_myos_max_number');
+
+        // slot stats and settings
         $isGiftable = Settings::get('free_myos_is_giftable');
         $isTradeable = Settings::get('free_myos_is_tradeable');
         $isResellable = Settings::get('free_myos_is_resellable');
         $hasRarity = Settings::get('free_myos_rarity') != 0;
         $rarity = Settings::get('free_myos_rarity');
+
+        // get available species and subtypes
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
         $requireSubtype = Settings::get('free_myos_require_subtype');
@@ -73,6 +77,7 @@ class CharacterController extends Controller
          $listInactiveMyos[] = CharacterDesignUpdate::where('status', '!=', 'Cancelled')->where('character_id', $myoId)->value('id');
         }
         $hasInactiveMyo = in_array(null, $listInactiveMyos);
+        
         return view('home.create_free_myo', [
             'specieses' => ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes' => ['0' => 'Pick a Species First'],
