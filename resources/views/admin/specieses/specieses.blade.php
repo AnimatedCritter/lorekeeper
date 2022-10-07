@@ -16,6 +16,7 @@
             <tr>
                 <th>Species</th>
                 <th>Sub Masterlist</th>
+                <th>Free MYO Usable</th>
                 <th></th>
             </tr>
         </thead>
@@ -28,6 +29,9 @@
                     </td>
                     <td>
                     @if(isset($species->sublist->name)) {{ $species->sublist->name  }} @else -- @endif
+                    </td>
+                    <td>
+                        @if($species->is_free_myo_usable == 1) <i class="far fa-check-circle fa-lg text-success"></i> @else <i class="far fa-times-circle fa-lg text-danger"></i> @endif
                     </td>
                     <td class="text-right">
                         <a href="{{ url('admin/data/species/edit/'.$species->id) }}" class="btn btn-primary">Edit</a>

@@ -18,6 +18,7 @@
             <tr>
                 <th>Subtype</th>
                 <th>Species</th>
+                <th>Free MYO Usable</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,6 +31,9 @@
                     </td>
                     <td>
                         {!! $subtype->species->displayName !!}
+                    </td>
+                    <td>
+                        @if($subtype->is_free_myo_usable == 1) <i class="far fa-check-circle fa-lg text-success"></i> @else <i class="far fa-times-circle fa-lg text-danger"></i> @endif
                     </td>
                     <td class="text-right">
                         <a href="{{ url('admin/data/subtypes/edit/'.$subtype->id) }}" class="btn btn-primary">Edit</a>
