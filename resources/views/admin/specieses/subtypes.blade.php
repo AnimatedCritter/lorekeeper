@@ -14,6 +14,13 @@
     <p>No subtypes found.</p>
 @else 
     <table class="table table-sm subtypes-table">
+        <thead>
+            <tr>
+                <th>Subtype</th>
+                <th>Species</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody id="sortable" class="sortable">
             @foreach($subtypes as $subtype)
                 <tr class="sort-item" data-id="{{ $subtype->id }}">
