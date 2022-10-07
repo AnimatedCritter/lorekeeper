@@ -81,19 +81,23 @@ class CharacterController extends Controller
         return view('home.create_free_myo', [
             'specieses' => ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes' => ['0' => 'Pick a Species First'],
+
             'closed' => $closed,
             'hasMaxNumber' => $hasMaxNumber,
             'maxNumber' => $maxNumber,
+            
             'isGiftable' => $isGiftable,
             'isTradeable' => $isTradeable,
             'isResellable' => $isResellable,
             'hasRarity' => $hasRarity,
             'rarity' => $rarity,
+
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
             'requireSubtype' => $requireSubtype,
             'inactiveMyoId' => $inactiveMyoId,
             'hasInactiveMyo' => $hasInactiveMyo,
+
             'isMyo' => true,
             'isFreeMyo' => true,
         ]);
@@ -109,6 +113,8 @@ class CharacterController extends Controller
       $species = $request->input('species');
       $hasSubtypeUsable = Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0;
       $requireSubtype = Settings::get('free_myos_require_subtype');
+
+      // select subtype dropdown options
       if($hasSubtypeUsable && !$requireSubtype){
         $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
       } elseif ($hasSubtypeUsable && $requireSubtype) {
@@ -116,6 +122,7 @@ class CharacterController extends Controller
       } else {
         $subtypeDropdown = ['0' => 'No Subtypes Available'];
       };
+
       return view('home._create_character_subtype', [
           'subtypes' => $subtypeDropdown,
           'isMyo' => $request->input('myo')
