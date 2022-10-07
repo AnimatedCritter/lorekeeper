@@ -59,6 +59,9 @@ class CharacterController extends Controller
         $closed = !Settings::get('free_myos_open');
         $hasMaxNumber = Settings::get('free_myos_max_number') != 0;
         $maxNumber = Settings::get('free_myos_max_number');
+        $isGiftable = Settings::get('free_myos_is_giftable');
+        $isTradeable = Settings::get('free_myos_is_tradeable');
+        $isResellable = Settings::get('free_myos_is_resellable');
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
         $requireSubtype = Settings::get('free_myos_require_subtype');
@@ -74,6 +77,9 @@ class CharacterController extends Controller
             'closed' => $closed,
             'hasMaxNumber' => $hasMaxNumber,
             'maxNumber' => $maxNumber,
+            'isGiftable' => $isGiftable,
+            'isTradeable' => $isTradeable,
+            'isResellable' => $isResellable,
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
             'requireSubtype' => $requireSubtype,

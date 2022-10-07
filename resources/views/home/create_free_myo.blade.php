@@ -28,9 +28,9 @@
     {{ Form::hidden('owner_url', null) }}
     {{ Form::hidden('description', null) }}
     {{ Form::hidden('is_visible', 1) }}
-    {{ Form::hidden('is_giftable', 1) }}
-    {{ Form::hidden('is_tradeable', 1) }}
-    {{ Form::hidden('is_sellable', null) }}
+    {{ Form::hidden('is_giftable', $isGiftable ? 1 : null) }}
+    {{ Form::hidden('is_tradeable', $isTradeable ? 1 : null) }}
+    {{ Form::hidden('is_sellable', $isResellable ? 1 : null) }}
     {{ Form::hidden('designer_id[]', null) }}
     {{ Form::hidden('designer_url[]', null) }}
     {{ Form::hidden('artist_id[]', null) }}
