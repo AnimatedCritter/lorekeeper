@@ -12,6 +12,7 @@ use App\Models\User\User;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\Character\Character;
+use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\User\UserCurrency;
@@ -61,7 +62,12 @@ class CharacterController extends Controller
         $hasSpeciesUsable = Species::where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::where('is_free_myo_usable', 1)->count() != 0;
         $requireSubtype = Settings::get('free_myos_require_subtype');
-        $inactiveMyo = Character::where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1);
+        $inactiveMyoId = Character::where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1)->pluck('id');
+        $listInactiveMyos = array();
+        foreach($inactiveMyoId as $myoId) {
+         $listInactiveMyos[] = CharacterDesignUpdate::where('status', '!=', 'Cancelled')->where('character_id', $myoId)->value('id');
+        }
+        $hasInactiveMyo = in_array(null, $listInactiveMyos);
         return view('home.create_free_myo', [
             'specieses' => ['0' => 'Select Species'] + Species::where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
             'subtypes' => ['0' => 'Pick a Species First'],
@@ -71,7 +77,8 @@ class CharacterController extends Controller
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
             'requireSubtype' => $requireSubtype,
-            'inactiveMyo' => $inactiveMyo,
+            'inactiveMyoId' => $inactiveMyoId,
+            'hasInactiveMyo' => $hasInactiveMyo,
             'isMyo' => true,
             'isFreeMyo' => true,
         ]);
