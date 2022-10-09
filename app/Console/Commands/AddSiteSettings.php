@@ -111,11 +111,11 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('free_myos_require_subtype', 0, '0: Subtypes are optional for free MYOs, 1: Subtypes are mandatory for free MYOs. ');
 
-        $this->addSiteSetting('free_myos_is_giftable', 1, '0: Subtypes are optional for free MYOs, 1: Subtypes are mandatory for free MYOs. ');
+        $this->addSiteSetting('free_myos_is_giftable', 1, '0: MYOs cannot be gifted, 1: MYOs can be gifted. ');
 
-        $this->addSiteSetting('free_myos_is_tradeable', 1, '0: Subtypes are optional for free MYOs, 1: Subtypes are mandatory for free MYOs. ');
+        $this->addSiteSetting('free_myos_is_tradeable', 1, '0: MYOs cannot be traded, 1: MYOs can be traded. ');
 
-        $this->addSiteSetting('free_myos_is_resellable', 0, '0: Subtypes are optional for free MYOs, 1: Subtypes are mandatory for free MYOs. ');
+        $this->addSiteSetting('free_myos_is_resellable', 0, '0: MYOs cannot be resold, 1: MYOs can be resold. ');
 
 
         $this->line("\nSite settings up to date!");
