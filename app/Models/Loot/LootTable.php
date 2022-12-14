@@ -15,7 +15,7 @@ class LootTable extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'display_name',
+        'name', 'display_name', 'disclose_loots'
     ];
 
     /**
@@ -33,6 +33,7 @@ class LootTable extends Model
     public static $createRules = [
         'name' => 'required',
         'display_name' => 'required',
+        'disclose_loots' => 'required',
     ];
 
     /**
@@ -43,6 +44,7 @@ class LootTable extends Model
     public static $updateRules = [
         'name' => 'required',
         'display_name' => 'required',
+        'disclose_loots' => 'required',
     ];
 
     /**********************************************************************************************

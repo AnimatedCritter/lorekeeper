@@ -25,6 +25,11 @@
     {!! Form::text('display_name', $table->getRawOriginal('display_name'), ['class' => 'form-control']) !!}
 </div>
 
+<div class="form-group">
+    {!! Form::label('Disclose Loots') !!} {!! add_help('This determines if users can see the potential rewards dropped from this table on the encyclopedia page.') !!}
+    {!! Form::select('disclose_loots', ['0' => '0: This table\'s loots are hidden.', '1' => '1: Users can see both loots and drop rates.', '2' => '2: Users can see loots, but not drop rates.'],$table->disclose_loots, ['class' => 'form-control']) !!}
+</div>
+
 <h3>Loot</h3>
 
 <p>These are the potential rewards from rolling on this loot table. You can add items, currencies or even another loot table. Chaining multiple loot tables is not recommended, however, and may run the risk of creating an infinite loop. @if(!$table->id) You can test loot rolling after the loot table is created. @endif</p>
