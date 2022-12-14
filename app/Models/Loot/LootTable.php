@@ -114,7 +114,7 @@ class LootTable extends Model
      */
     public function getDisplayNameAttribute()
     {
-        return '<span class="display-loot">'.$this->attributes['display_name'].'</span> '.add_help('This reward is random.');
+        return '<a class="display-loot" href="'.$this->url.'">'.$this->attributes['display_name'].'</a> '.add_help('This reward is random.');
     }
 
     /**
