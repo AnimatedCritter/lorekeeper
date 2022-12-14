@@ -61,6 +61,46 @@ class LootTable extends Model
 
     /**********************************************************************************************
 
+        SCOPES
+
+    **********************************************************************************************/
+
+    /**
+     * Scope a query to sort items in alphabetical order.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  bool                                   $reverse
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSortAlphabetical($query, $reverse = false)
+    {
+        return $query->orderBy('name', $reverse ? 'DESC' : 'ASC');
+    }
+
+    /**
+     * Scope a query to sort items by newest first.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSortNewest($query)
+    {
+        return $query->orderBy('id', 'DESC');
+    }
+
+    /**
+     * Scope a query to sort features oldest first.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSortOldest($query)
+    {
+        return $query->orderBy('id');
+    }
+
+    /**********************************************************************************************
+
         ACCESSORS
 
     **********************************************************************************************/
@@ -83,6 +123,16 @@ class LootTable extends Model
     public function getAssetTypeAttribute()
     {
         return 'loot_tables';
+    }
+
+    /**
+     * Gets the URL of the model's encyclopedia page.
+     *
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        return url('world/loot-tables?name='.$this->name);
     }
 
     /**********************************************************************************************

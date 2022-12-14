@@ -11,6 +11,8 @@ use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\Item\ItemCategory;
 use App\Models\Item\Item;
+use App\Models\Loot\Loot;
+use App\Models\Loot\LootTable;
 use App\Models\Feature\FeatureCategory;
 use App\Models\Feature\Feature;
 use App\Models\Character\CharacterCategory;
@@ -301,6 +303,42 @@ class WorldController extends Controller
             'description' => $item->parsed_description,
             'categories' => $categories->keyBy('id'),
             'shops' => Shop::whereIn('id', ShopStock::where('item_id', $item->id)->pluck('shop_id')->unique()->toArray())->orderBy('sort', 'DESC')->get()
+        ]);
+    }
+
+    /**
+     * Shows the loot tables page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getLootTables(Request $request)
+    {
+        $query = LootTable::query();
+        $data = $request->only(['name', 'sort']);
+        if(isset($data['name']))
+            $query->where('name', 'LIKE', '%'.$data['name'].'%');
+
+        if(isset($data['sort']))
+        {
+            switch($data['sort']) {
+                case 'alpha':
+                    $query->sortAlphabetical();
+                    break;
+                case 'alpha-reverse':
+                    $query->sortAlphabetical(true);
+                    break;
+                case 'newest':
+                    $query->sortNewest();
+                    break;
+                case 'oldest':
+                    $query->sortOldest();
+                    break;
+            }
+        }
+
+        return view('world.loot_tables', [
+            'tables' => $query->paginate(20)->appends($request->query()),
         ]);
     }
 
