@@ -12,7 +12,7 @@
                     <tr>
                         <th width="70%">Loot</th>
                         @if($table->disclose_loots == 1)
-                            <th width="30%">Weight</th>
+                            <th width="30%">Drop Rate</th>
                         @endif
                     </tr>
                 </thead>
@@ -23,7 +23,7 @@
                                 {!! $loot->displayName !!}
                             </td>
                             @if($table->disclose_loots == 1)
-                                <td>{{ $loot->weight }}</td>
+                                <td>{{ $loot->dropRate }}</td>
                             @endif
                         </tr>
                     @endforeach

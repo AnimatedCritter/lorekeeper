@@ -112,4 +112,16 @@ class Loot extends Model
         else
             return $displayType.' : <a href="'.$this->reward->url.'">'.$this->reward->name.'</a>';
     }
+
+    /**
+     * Displays the drop rate of a loot.
+     *
+     * @return string
+     */
+    public function getDropRateAttribute()
+    {
+        $totalWeight = Loot::where('loot_table_id', $this->loot_table_id)->sum('weight');
+        $dropRate = $this->weight / $totalWeight * 100;
+        return number_format((float)$dropRate, 2, '.', '').'%';
+    }
 }
