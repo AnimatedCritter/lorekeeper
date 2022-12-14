@@ -18,13 +18,18 @@
         <div class="d-flex row flex-wrap col-12 pb-1 px-0 ubt-bottom">
           <div class="col-3 col-md-2 font-weight-bold">ID</div>
           <div class="col-3 col-md-4 font-weight-bold">Name</div>
-          <div class="col-6 col-md-5 font-weight-bold">Display Name</div>
+          <div class="col-3 col-md-3 font-weight-bold">Display Name</div>
+          <div class="col-md-2 d-none d-md-inline font-weight-bold">Disclose Drops</div>
         </div>
         @foreach($tables as $table)
         <div class="d-flex row flex-wrap col-12 mt-1 pt-1 px-0 ubt-top">
           <div class="col-3 col-md-2 ">#{{ $table->id }}</div>
           <div class="col-3 col-md-4">{{ $table->name }}</div>
-          <div class="col-3 col-md-5">{!! $table->display_name !!}</div>
+          <div class="col-3 col-md-3">{!! $table->display_name !!}</div>
+          <div class="d-none d-md-inline col-md-2"><i class="far
+              {{ $table->disclose_loots == 1 ? 'fa-check-circle text-success' : ($table->disclose_loots == 2 ? 'fa-pause-circle text-secondary' : 'fa-times-circle text-danger') }}
+            "></i>
+          </div>
           <div class="col-3 col-md-1 text-right"><a href="{{ url('admin/data/loot-tables/edit/'.$table->id) }}" class="btn btn-primary py-0 px-2">Edit</a></div>
         </div>
         @endforeach
