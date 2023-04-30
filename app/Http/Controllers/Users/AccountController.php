@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Users;
 use Auth;
 use File;
 use Image;
+use Settings;
+use Carbon\Carbon;
 
 use App\Models\User\User;
 use App\Models\User\UserAlias;
+use App\Models\User\UsernameLog;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -49,7 +52,15 @@ class AccountController extends Controller
      */
     public function getSettings()
     {
-        return view('account.settings');
+        $lastUsernameChange = UsernameLog::where('user_id', Auth::user()->id)->where('is_staff_edit', 0)->orderBy('updated_at', 'DESC')->first();
+        $daysSinceNameChange = isset($lastUsernameChange) ? Carbon::now()->diffInDays($lastUsernameChange->updated_at) : Settings::get('username_change_cooldown');
+        $usernameCooldown = Settings::get('username_change_cooldown');
+
+        return view('account.settings', [
+            'usernameCooldown' => $usernameCooldown,
+            'canChangeName' => $daysSinceNameChange >= $usernameCooldown,
+            'usernameCountdown' => $usernameCooldown - $daysSinceNameChange
+        ]);
     }
     
     /**

@@ -103,6 +103,8 @@ class AddSiteSettings extends Command
 
         $this->addSiteSetting('group_currency', 1, 'ID of the group currency to award from gallery submissions (if enabled).');
 
+        $this->addSiteSetting('username_change_cooldown', 30, 'The number of days a user must wait before they can change their username.');
+
         $this->line("\nSite settings up to date!");
 
     }

@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use File;
 use Image;
+use Settings;
 use Carbon\Carbon;
 
 use App\Models\User\User;
@@ -15,6 +16,7 @@ use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Submission\Submission;
 use App\Models\Gallery\GallerySubmission;
 use App\Models\User\UserUpdateLog;
+use App\Models\User\UsernameLog;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -121,6 +123,10 @@ class UserService extends Service
 
         try {
             if(!Hash::check($data['password'], $user->password)) throw new \Exception("Please make sure you've entered your password correctly.");
+
+            $lastUsernameChange = UsernameLog::where('user_id', $user->id)->where('is_staff_edit', 0)->orderBy('updated_at', 'DESC')->first();
+            $daysSinceNameChange = Carbon::now()->diffInDays($lastUsernameChange->updated_at);
+            if($daysSinceNameChange < Settings::get('username_change_cooldown')) throw new \Exception("You must wait for your cooldown to end before changing your username again.");
 
             if(!$this->createUsernameLog($user->id, $user->name, $data['username'], 0)) throw new \Exception("Failed to create log.");
 
