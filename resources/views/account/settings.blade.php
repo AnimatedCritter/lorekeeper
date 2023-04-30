@@ -53,6 +53,30 @@
 </div>
 
 <div class="card p-3 mb-2">
+    <h3>Change Username</h3>
+    <p>
+        For security and moderation purposes, all usernames changes will be recorded in your username log.
+    </p>
+    {!! Form::open(['url' => 'account/username']) !!}
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">New Username</label>
+            <div class="col-md-10">
+                {!! Form::text('username', Auth::user()->name, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">Password</label>
+            <div class="col-md-10">
+                {!! Form::password('password', ['class' => 'form-control']) !!}
+            </div>
+        </div>
+        <div class="text-right">
+            {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
+        </div>
+    {!! Form::close() !!}
+</div>
+
+<div class="card p-3 mb-2">
     <h3>Email Address</h3>
     <p>Changing your email address will require you to re-verify your email address.</p>
     {!! Form::open(['url' => 'account/email']) !!}

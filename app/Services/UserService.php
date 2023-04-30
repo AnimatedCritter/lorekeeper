@@ -108,6 +108,55 @@ class UserService extends Service
     }
 
     /**
+     * Updates the user's display name. 
+     *
+     * @param  array                  $data
+     * @param  \App\Models\User\User  $user
+     * @return bool
+     */
+    public function updateUsername($data, $user)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            if(!Hash::check($data['password'], $user->password)) throw new \Exception("Please make sure you've entered your password correctly.");
+
+            if(!$this->createUsernameLog($user->id, $user->name, $data['username'], 0)) throw new \Exception("Failed to create log.");
+
+            $user->name = $data['username'];
+            $user->save();
+
+            return $this->commitReturn(true);
+        } catch(\Exception $e) { 
+            $this->setError('error', $e->getMessage());
+        }
+        return $this->rollbackReturn(false);
+    }
+
+    /**
+     * Creates a username log.
+     *
+     * @param  int     $userId
+     * @param  string  $oldUsername
+     * @param  string  $newUsername
+     * @return  int
+     */
+    public function createUsernameLog($userId, $oldUsername, $NewUsername, $staffEdit)
+    {
+        return DB::table('username_log')->insert(
+            [
+                'user_id' => $userId,
+                'old_username' => $oldUsername,
+                'new_username' => $NewUsername,
+                'updated_at' => Carbon::now(),
+                'is_staff_edit' => $staffEdit
+            ]
+        );
+    }
+
+
+    /**
      * Updates the user's email and resends a verification email. 
      *
      * @param  array                  $data

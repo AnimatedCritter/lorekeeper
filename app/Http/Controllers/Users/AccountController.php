@@ -86,6 +86,29 @@ class AccountController extends Controller
     }
     
     /**
+     * Changes the user's display name.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Services\UserService  $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postUsername(Request $request, UserService $service)
+    {
+        if($request['username'] == Auth::user()->name) flash("You are already using this username.");
+        $request->validate( [
+            'username' => 'required|string|min:3|max:255|alpha_dash|unique:users,name'
+        ]);
+
+        if($service->updateUsername($request->only(['username', 'password']), Auth::user())) {
+            flash('Username updated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+    
+    /**
      * Changes the user's password.
      *
      * @param  \Illuminate\Http\Request  $request
