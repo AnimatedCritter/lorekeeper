@@ -60,6 +60,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'Users'], function() {
     Route::get('{name}/currency-logs', 'UserController@getUserCurrencyLogs');
     Route::get('{name}/item-logs', 'UserController@getUserItemLogs');
     Route::get('{name}/ownership', 'UserController@getUserOwnershipLogs');
+    Route::get('{name}/username-logs', 'UserController@getUsernameLogs');
     Route::get('{name}/submissions', 'UserController@getUserSubmissions');
 });
 
