@@ -37,7 +37,7 @@
                 <div class="alert alert-secondary">{!! $request->character->image->subtype->displayName !!}</div>
             @else
                 @if ($isMyo && $isFreeMyo && !$hasSubtypeUsable)
-                    <p class="alert alert-warning">No subtypes are currently available to use for free MYOs.</p>
+                    <p class="alert alert-secondary">No subtypes are currently available to use for free MYOs.</p>
                 @else
                     <div id="subtypes">
                         {!! Form::select('subtype_id', $subtypes, $request->subtype_id, ['class' => 'form-control', 'id' => 'subtype']) !!}

@@ -40,7 +40,7 @@
                             {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
                         </div>
                     @else
-                        <p class="alert alert-danger">No subtypes are currently available to use for free MYOs.</p>
+                        <p class="alert alert-secondary">No subtypes are currently available to use for free MYOs.</p>
                     @endif
                 @else
                     {{ Form::hidden('species_id', null) }}
