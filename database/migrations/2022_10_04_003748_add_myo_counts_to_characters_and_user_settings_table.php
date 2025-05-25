@@ -4,15 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMyoCountsToCharactersAndUserSettingsTable extends Migration
-{
+class AddMyoCountsToCharactersAndUserSettingsTable extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::table('characters', function (Blueprint $table) {
             $table->boolean('is_free_myo')->default(0)->after('is_myo_slot');
         });
@@ -24,11 +20,8 @@ class AddMyoCountsToCharactersAndUserSettingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::table('characters', function (Blueprint $table) {
             $table->dropColumn('is_free_myo');
         });

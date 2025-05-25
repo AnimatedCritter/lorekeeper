@@ -13,7 +13,7 @@ return [
     */
 
     // The default name given to free MYO slots.
-    'myo_slot_name'   => "Free MYO",
+    'myo_slot_name'   => 'Free MYO',
 
     // Optional limit to the number of free MYOs a user can create.
     // Enter "0" to allow users infinite free MYOs.
@@ -25,7 +25,7 @@ return [
     'free_myos_rarity'   => 0,
 
     // 0: Subtypes are optional for free MYOs,
-    // 1: Subtypes are mandatory for free MYOs. 
+    // 1: Subtypes are mandatory for free MYOs.
     'free_myos_require_subtype'   => 0,
 
     // null: MYOs cannot be gifted,

@@ -43,8 +43,7 @@ class CharacterController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getCreateFreeMyo()
-    {
+    public function getCreateFreeMyo() {
         $closed = !Settings::get('free_myos_open');
         $hasMaxNumber = config('lorekeeper.free_myos.free_myos_max_number') != 0;
         $maxNumber = config('lorekeeper.free_myos.free_myos_max_number');
@@ -54,60 +53,58 @@ class CharacterController extends Controller {
         $hasSubtypeUsable = Subtype::visible()->where('is_free_myo_usable', 1)->count() != 0;
         $requireSubtype = config('lorekeeper.free_myos.free_myos_require_subtype');
         $inactiveMyoId = Character::visible()->where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1)->pluck('id');
-        $listInactiveMyos = array();
-        foreach($inactiveMyoId as $myoId) {
-         $listInactiveMyos[] = CharacterDesignUpdate::where('status', '!=', 'Cancelled')->where('character_id', $myoId)->value('id');
+        $listInactiveMyos = [];
+        foreach ($inactiveMyoId as $myoId) {
+            $listInactiveMyos[] = CharacterDesignUpdate::where('status', '!=', 'Cancelled')->where('character_id', $myoId)->value('id');
         }
         $hasInactiveMyo = in_array(null, $listInactiveMyos);
-        
+
         return view('home.create_free_myo', [
             'specieses' => ['0' => 'Select Species'] + Species::visible()->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray(),
-            'subtypes' => ['0' => 'Pick a Species First'],
+            'subtypes'  => ['0' => 'Pick a Species First'],
 
-            'closed' => $closed,
+            'closed'       => $closed,
             'hasMaxNumber' => $hasMaxNumber,
-            'maxNumber' => $maxNumber,
-            'slotName'  => config('lorekeeper.free_myos.myo_slot_name'),
+            'maxNumber'    => $maxNumber,
+            'slotName'     => config('lorekeeper.free_myos.myo_slot_name'),
 
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
-            'requireSubtype' => $requireSubtype,
-            'inactiveMyoId' => $inactiveMyoId,
-            'hasInactiveMyo' => $hasInactiveMyo,
-            'isMyo' => true,
+            'requireSubtype'   => $requireSubtype,
+            'inactiveMyoId'    => $inactiveMyoId,
+            'hasInactiveMyo'   => $hasInactiveMyo,
+            'isMyo'            => true,
         ]);
     }
 
     /**
-     * Shows the edit image subtype portion of the modal
+     * Shows the edit image subtype portion of the modal.
      *
-     * @param  Request  $request
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getCreateCharacterMyoSubtype(Request $request) {
-      $species = $request->input('species');
-      $hasSubtypeUsable = Subtype::visible()->where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0;
-      $requireSubtype = config('lorekeeper.free_myos.free_myos_require_subtype');
+        $species = $request->input('species');
+        $hasSubtypeUsable = Subtype::visible()->where('species_id', '=', $species)->where('is_free_myo_usable', 1)->count() != 0;
+        $requireSubtype = config('lorekeeper.free_myos.free_myos_require_subtype');
 
-      // select subtype dropdown options
-      if($hasSubtypeUsable && !$requireSubtype){
-        $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::visible()->where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
-      } elseif ($hasSubtypeUsable && $requireSubtype) {
-        $subtypeDropdown = Subtype::visible()->where('species_id','=',$species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
-      } else {
-        $subtypeDropdown = ['0' => 'No Subtypes Available'];
-      };
+        // select subtype dropdown options
+        if ($hasSubtypeUsable && !$requireSubtype) {
+            $subtypeDropdown = ['0' => 'Select Subtype'] + Subtype::visible()->where('species_id', '=', $species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+        } elseif ($hasSubtypeUsable && $requireSubtype) {
+            $subtypeDropdown = Subtype::visible()->where('species_id', '=', $species)->where('is_free_myo_usable', 1)->orderBy('sort', 'DESC')->pluck('name', 'id')->toArray();
+        } else {
+            $subtypeDropdown = ['0' => 'No Subtypes Available'];
+        }
 
-      return view('home._create_character_subtype', [
-          'subtypes' => $subtypeDropdown,
-          'isMyo' => $request->input('myo')
-      ]);
+        return view('home._create_character_subtype', [
+            'subtypes' => $subtypeDropdown,
+            'isMyo'    => $request->input('myo'),
+        ]);
     }
 
     /**
-     * Returns the image url of the selected free MYO species/subtype
+     * Returns the image url of the selected free MYO species/subtype.
      *
-     * @param  Request  $request
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function getMyoPreviewImage(Request $request) {
@@ -125,12 +122,11 @@ class CharacterController extends Controller {
     /**
      * Creates a free MYO slot.
      *
-     * @param  \Illuminate\Http\Request       $request
-     * @param  App\Services\CharacterManager  $service
+     * @param App\Services\CharacterManager $service
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postCreateFreeMyo(Request $request, CharacterManager $service)
-    {
+    public function postCreateFreeMyo(Request $request, CharacterManager $service) {
         // Check if the configured rarity exsists. If not, fall back onto the lowest-ranked rarity.
         $rarities = Rarity::orderBy('sort')->get();
         $freeMyoRarity = config('lorekeeper.free_myos.free_myos_rarity');
@@ -144,27 +140,30 @@ class CharacterController extends Controller {
         $data = $request->only([
             'name', 'species_id', 'subtype_id',
         ]) + [
-            'user_id' => Auth::user()->id,
-            'description' => null,
-            'designer_id' => [],
+            'user_id'      => Auth::user()->id,
+            'description'  => null,
+            'designer_id'  => [],
             'designer_url' => [],
-            'artist_id' => [],
-            'artist_url' => [],
-            'feature_id' => [],
-            'is_giftable' => config('lorekeeper.free_myos.free_myos_is_giftable'),
+            'artist_id'    => [],
+            'artist_url'   => [],
+            'feature_id'   => [],
+            'is_giftable'  => config('lorekeeper.free_myos.free_myos_is_giftable'),
             'is_tradeable' => config('lorekeeper.free_myos.free_myos_is_tradeable'),
-            'is_sellable' => config('lorekeeper.free_myos.free_myos_is_resellable'),
-            'rarity_id' => $rarityId,
-            'is_visible' => 1,
+            'is_sellable'  => config('lorekeeper.free_myos.free_myos_is_resellable'),
+            'rarity_id'    => $rarityId,
+            'is_visible'   => 1,
         ];
 
         if ($character = $service->createCharacter($data, Auth::user(), true, true)) {
             flash('MYO slot created successfully.')->success();
+
             return redirect()->to($character->url.'/approval');
+        } else {
+            foreach ($service->errors()->getMessages()['error'] as $error) {
+                flash($error)->error();
+            }
         }
-        else {
-            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
-        }
+
         return redirect()->back()->withInput();
     }
 

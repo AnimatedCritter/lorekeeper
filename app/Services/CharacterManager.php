@@ -84,21 +84,21 @@ class CharacterManager extends Service {
 
         try {
             if ($isFreeMyo && !Settings::get('free_myos_open')) {
-                throw new \Exception("Free MYO slot creation is currently closed.");
+                throw new \Exception('Free MYO slot creation is currently closed.');
             }
 
             if ($isFreeMyo && UserSettings::where('user_id', $data['user_id'])->pluck('free_myos_made')->first() >= config('lorekeeper.free_myos.free_myos_max_number') && config('lorekeeper.free_myos.free_myos_max_number') != 0) {
-                throw new \Exception("You have already created the maximum amount of free MYO slots.");
+                throw new \Exception('You have already created the maximum amount of free MYO slots.');
             }
 
             $inactiveMyoId = Character::where('user_id', $data['user_id'])->where('is_myo_slot', 1)->where('is_free_myo', 1)->pluck('id');
-            $listInactiveMyos = array();
+            $listInactiveMyos = [];
             foreach ($inactiveMyoId as $myoId) {
                 $listInactiveMyos[] = CharacterDesignUpdate::where('status', '!=', 'Cancelled')->where('character_id', $myoId)->value('id');
             }
             $hasInactiveMyo = in_array(null, $listInactiveMyos);
             if ($isMyo && $isFreeMyo && $hasInactiveMyo) {
-                throw new \Exception("You currently have un-used free MYO(s). Please submit a design request before creating a new slot.");
+                throw new \Exception('You currently have un-used free MYO(s). Please submit a design request before creating a new slot.');
             }
 
             if (!$isMyo && Character::where('slug', $data['slug'])->exists()) {
