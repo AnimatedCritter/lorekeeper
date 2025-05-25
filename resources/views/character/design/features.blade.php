@@ -23,7 +23,7 @@
                 <div class="alert alert-secondary">{!! $request->character->image->species->displayName !!}</div>
             @else
                 @if ($isMyo && $isFreeMyo && !$hasSpeciesUsable)
-                <p class="alert alert-danger">No species are currently available to use for free MYOs. Please <a href="{{ url('reports/bug-reports') }}">file a bug report</a>.</p>
+                    <p class="alert alert-danger">No species are currently available to use for free MYOs. Please <a href="{{ url('reports/bug-reports') }}">file a bug report</a>.</p>
                 @else
                     {!! Form::select('species_id', $specieses, $request->species_id, ['class' => 'form-control', 'id' => 'species']) !!}
                 @endif

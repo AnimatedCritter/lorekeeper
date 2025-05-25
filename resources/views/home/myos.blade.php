@@ -12,7 +12,7 @@
     </h1>
 
     <div class="text-right">
-            <a href="{{ url('characters/myos/new') }}" class="btn btn-success mb-2">Create Free MYO</a>
+        <a href="{{ url('characters/myos/new') }}" class="btn btn-success mb-2">Create Free MYO</a>
     </div>
 
     <p>This is a list of MYO slots you own - click on a slot to view details about it. MYO slots can be submitted for design approval from their respective pages.</p>
