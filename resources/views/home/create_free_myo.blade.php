@@ -9,7 +9,7 @@
         Create Free MYO 
 </h1>
 
-@if($closed)
+@if ($closed)
     <div class="alert alert-danger">
         Free MYO slots are currently closed. You cannot make a new MYO slot at this time.
     </div>
@@ -30,12 +30,12 @@
     {{ Form::hidden('is_tradeable', $isTradeable ? 1 : null) }}
     {{ Form::hidden('is_sellable', $isResellable ? 1 : null) }}
     {{ Form::hidden('rarity_id', $hasRarity != 0 ? $rarity : null) }}
-    @if($hasSpeciesUsable)
+    @if ($hasSpeciesUsable)
         <div class="form-group">
             {!! Form::label('Species') !!}{!! add_help('This will select the specific species your MYO will be. Leave it blank if you would like to choose later.') !!}
             {!! Form::select('species_id', $specieses, old('species_id'), ['class' => 'form-control', 'id' => 'species']) !!}
         </div>
-        @if($hasSubtypeUsable)
+        @if ($hasSubtypeUsable)
             <div class="form-group" id="subtypes">
                 {!! Form::label('Subtype (Optional)') !!}{!! add_help('This will lock the slot into a particular subtype. Leave it blank if you would like to choose later. The subtype must match the species selected above, and if no species is specified, the subtype will not be applied.') !!}
                 {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-body">
                 <p>This will create a free MYO slot. You cannot make a new one until a design request(s) are submitted for the current one(s) in your possession
-                    @if($hasMaxNumber)
+                    @if ($hasMaxNumber)
                         ,and you can only make a maximum of $maxNumber free slots
                     @endif
                 . Do you wish to continue?</p>
