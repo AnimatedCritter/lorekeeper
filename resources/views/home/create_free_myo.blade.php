@@ -21,31 +21,38 @@
     <div class="alert alert-danger">
         You currently have an <a href="{{ url('myo/'.$inactiveMyoId->first()) }}">un-used free MYO slot</a>. Please submit a design request before creating a new slot.
     </div>
-@else 
-{!! Form::open(['url' => 'characters/myos/new', 'id' => 'submissionForm']) !!}
-    {{ Form::hidden('name', $slotName) }}
-    @if ($hasSpeciesUsable)
-        <div class="form-group">
-            {!! Form::label('Species') !!}{!! add_help('This will select the specific species your MYO will be. Leave it blank if you would like to choose later.') !!}
-            {!! Form::select('species_id', $specieses, old('species_id'), ['class' => 'form-control', 'id' => 'species']) !!}
+@else
+    <div class="row">
+        <div class="col-4 text-center">
+            <img class="mw-100" id="speciesPreviewImg" src="{{ asset('images/myo.png') }}" alt="Free MYO Thumbnail" />
         </div>
-        @if ($hasSubtypeUsable)
-            <div class="form-group" id="subtypes">
-                {!! Form::label('Subtype (Optional)') !!}{!! add_help('This will lock the slot into a particular subtype. Leave it blank if you would like to choose later. The subtype must match the species selected above, and if no species is specified, the subtype will not be applied.') !!}
-                {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
-            </div>
-        @else
-            <p class="alert alert-danger">No subtypes are currently available to use for free MYOs.</p>
-        @endif
-    @else
-        {{ Form::hidden('species_id', null) }}
-        {{ Form::hidden('subtype_id', null) }}
-    @endif
+        <div class="col-8">
+            {!! Form::open(['url' => 'characters/myos/new', 'id' => 'submissionForm']) !!}
+                {{ Form::hidden('name', $slotName) }}
+                @if ($hasSpeciesUsable)
+                    <div class="form-group">
+                        {!! Form::label('Species') !!}{!! add_help('This will select the specific species your MYO will be. Leave it blank if you would like to choose later.') !!}
+                        {!! Form::select('species_id', $specieses, old('species_id'), ['class' => 'form-control', 'id' => 'species']) !!}
+                    </div>
+                    @if ($hasSubtypeUsable)
+                        <div class="form-group" id="subtypes">
+                            {!! Form::label('Subtype (Optional)') !!}{!! add_help('This will lock the slot into a particular subtype. Leave it blank if you would like to choose later. The subtype must match the species selected above, and if no species is specified, the subtype will not be applied.') !!}
+                            {!! Form::select('subtype_id', $subtypes, old('subtype_id'), ['class' => 'form-control disabled', 'id' => 'subtype']) !!}
+                        </div>
+                    @else
+                        <p class="alert alert-danger">No subtypes are currently available to use for free MYOs.</p>
+                    @endif
+                @else
+                    {{ Form::hidden('species_id', null) }}
+                    {{ Form::hidden('subtype_id', null) }}
+                @endif
 
-    <div class="text-center">
-        <a href="#" class="btn btn-primary" id="submitButton">Create Free MYO</a>
+                <div class="text-center">
+                    <a href="#" class="btn btn-primary" id="submitButton">Create Free MYO</a>
+                </div>
+            {!! Form::close() !!}
+        </div>
     </div>
-{!! Form::close() !!}
 @endif
 
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog">
@@ -79,6 +86,16 @@
       $.ajax({
         type: "GET", url: "{{ url('characters/check-subtype') }}?species="+species+"&myo="+myo, dataType: "text"
       }).done(function (res) { $("#subtypes").html(res); }).fail(function (jqXHR, textStatus, errorThrown) { alert("AJAX call failed: " + textStatus + ", " + errorThrown); });
+      $.ajax({
+        type: "GET", url: "{{ url('characters/get-myo-preview') }}?species="+species, dataType: "text"
+      }).done(function (res) { document.getElementById('speciesPreviewImg').src = (res); console.log(res); }).fail(function (jqXHR, textStatus, errorThrown) { alert("AJAX call failed: " + textStatus + ", " + errorThrown); });
+    });
+
+    $( "#subtypes" ).change(function() {
+      var subtype = $('#subtype').val();
+      $.ajax({
+        type: "GET", url: "{{ url('characters/get-myo-preview') }}?subtype="+subtype, dataType: "text"
+      }).done(function (res) { document.getElementById('speciesPreviewImg').src = (res); console.log(res); }).fail(function (jqXHR, textStatus, errorThrown) { alert("AJAX call failed: " + textStatus + ", " + errorThrown); });
     });
 
         $(document).ready(function() {

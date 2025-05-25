@@ -104,6 +104,24 @@ class CharacterController extends Controller {
     }
 
     /**
+     * Returns the image url of the selected free MYO species/subtype
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getMyoPreviewImage(Request $request) {
+        if ($request->input('subtype') != 0) {
+            $imageUrl = Subtype::visible()->where('id', $request->input('subtype'))->first()->subtypeImageUrl;
+        } elseif ($request->input('species') != 0) {
+            $imageUrl = Species::visible()->where('id', $request->input('species'))->first()->speciesImageUrl;
+        } else {
+            $imageUrl = asset('images/myo.png');
+        }
+
+        return $imageUrl;
+    }
+
+    /**
      * Creates a free MYO slot.
      *
      * @param  \Illuminate\Http\Request       $request
