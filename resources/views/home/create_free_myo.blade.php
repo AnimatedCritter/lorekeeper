@@ -23,13 +23,7 @@
     </div>
 @else 
 {!! Form::open(['url' => 'characters/myos/new', 'id' => 'submissionForm']) !!}
-    {{ Form::hidden('name', 'Free MYO') }}
-
-    <!-- Editable via Site Settings -->
-    {{ Form::hidden('is_giftable', $isGiftable ? 1 : null) }}
-    {{ Form::hidden('is_tradeable', $isTradeable ? 1 : null) }}
-    {{ Form::hidden('is_sellable', $isResellable ? 1 : null) }}
-    {{ Form::hidden('rarity_id', $hasRarity != 0 ? $rarity : null) }}
+    {{ Form::hidden('name', $slotName) }}
     @if ($hasSpeciesUsable)
         <div class="form-group">
             {!! Form::label('Species') !!}{!! add_help('This will select the specific species your MYO will be. Leave it blank if you would like to choose later.') !!}
@@ -47,18 +41,6 @@
         {{ Form::hidden('species_id', null) }}
         {{ Form::hidden('subtype_id', null) }}
     @endif
-    
-    <!-- Null $data Values -->
-    {{ Form::hidden('user_id', Auth::user()->id) }}
-    {{ Form::hidden('owner_url', null) }}
-    {{ Form::hidden('description', null) }}
-    {{ Form::hidden('is_visible', 1) }}
-    {{ Form::hidden('designer_id[]', null) }}
-    {{ Form::hidden('designer_url[]', null) }}
-    {{ Form::hidden('artist_id[]', null) }}
-    {{ Form::hidden('artist_url[]', null) }}
-    {{ Form::hidden('feature_id[]', null) }}
-    {{ Form::hidden('feature_data[]', null) }}
 
     <div class="text-center">
         <a href="#" class="btn btn-primary" id="submitButton">Create Free MYO</a>

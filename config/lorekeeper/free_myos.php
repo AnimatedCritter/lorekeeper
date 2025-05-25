@@ -12,6 +12,9 @@ return [
     |
     */
 
+    // The default name given to free MYO slots.
+    'myo_slot_name'   => "Free MYO",
+
     // Optional limit to the number of free MYOs a user can create.
     // Enter "0" to allow users infinite free MYOs.
     'free_myos_max_number'   => 0,
@@ -24,16 +27,16 @@ return [
     // 1: Subtypes are mandatory for free MYOs. 
     'free_myos_require_subtype'   => 0,
 
-    // 0: MYOs cannot be gifted,
+    // null: MYOs cannot be gifted,
     // 1: MYOs can be gifted.
     'free_myos_is_giftable'   => 1,
 
-    // 0: MYOs cannot be traded,
+    // null: MYOs cannot be traded,
     // 1: MYOs can be traded.
     'free_myos_is_tradeable'   => 1,
 
-    // 0: MYOs cannot be resold,
+    // null: MYOs cannot be resold,
     // 1: MYOs can be resold.
-    'free_myos_is_resellable'   => 0,
+    'free_myos_is_resellable'   => null,
 
 ];

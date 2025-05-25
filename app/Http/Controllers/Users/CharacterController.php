@@ -48,13 +48,6 @@ class CharacterController extends Controller {
         $hasMaxNumber = config('lorekeeper.free_myos.free_myos_max_number') != 0;
         $maxNumber = config('lorekeeper.free_myos.free_myos_max_number');
 
-        // slot stats and settings
-        $isGiftable = config('lorekeeper.free_myos.free_myos_is_giftable');
-        $isTradeable = config('lorekeeper.free_myos.free_myos_is_tradeable');
-        $isResellable = config('lorekeeper.free_myos.free_myos_is_resellable');
-        $rarity = config('lorekeeper.free_myos.free_myos_rarity');
-        $hasRarity = config('lorekeeper.free_myos.free_myos_rarity') != 0;
-
         // get available species and subtypes
         $hasSpeciesUsable = Species::visible()->where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::visible()->where('is_free_myo_usable', 1)->count() != 0;
@@ -73,21 +66,14 @@ class CharacterController extends Controller {
             'closed' => $closed,
             'hasMaxNumber' => $hasMaxNumber,
             'maxNumber' => $maxNumber,
-            
-            'isGiftable' => $isGiftable,
-            'isTradeable' => $isTradeable,
-            'isResellable' => $isResellable,
-            'hasRarity' => $hasRarity,
-            'rarity' => $rarity,
+            'slotName'  => config('lorekeeper.free_myos.myo_slot_name'),
 
             'hasSpeciesUsable' => $hasSpeciesUsable,
             'hasSubtypeUsable' => $hasSubtypeUsable,
             'requireSubtype' => $requireSubtype,
             'inactiveMyoId' => $inactiveMyoId,
             'hasInactiveMyo' => $hasInactiveMyo,
-
             'isMyo' => true,
-            'isFreeMyo' => true,
         ]);
     }
 
@@ -128,15 +114,22 @@ class CharacterController extends Controller {
     {
         $request->validate(Character::$myoRules);
         $data = $request->only([
-            'user_id', 'owner_url', 'name',
-            'description', 'is_visible', 'is_giftable', 'is_tradeable', 'is_sellable',
-            'sale_value', 'transferrable_at', 'use_cropper',
-            'x0', 'x1', 'y0', 'y1',
-            'designer_id', 'designer_url',
-            'artist_id', 'artist_url',
-            'species_id', 'subtype_id', 'rarity_id', 'feature_id', 'feature_data',
-            'image', 'thumbnail'
-        ]);
+            'name', 'species_id', 'subtype_id',
+        ]) + [
+            'user_id' => Auth::user()->id,
+            'description' => null,
+            'designer_id' => [],
+            'designer_url' => [],
+            'artist_id' => [],
+            'artist_url' => [],
+            'feature_id' => [],
+            'is_giftable' => config('lorekeeper.free_myos.free_myos_is_giftable'),
+            'is_tradeable' => config('lorekeeper.free_myos.free_myos_is_tradeable'),
+            'is_sellable' => config('lorekeeper.free_myos.free_myos_is_resellable'),
+            'rarity_id' => config('lorekeeper.free_myos.free_myos_rarity'),
+            'is_visible' => 1,
+        ];
+
         if ($character = $service->createCharacter($data, Auth::user(), true, true)) {
             flash('MYO slot created successfully.')->success();
             return redirect()->to($character->url.'/approval');
