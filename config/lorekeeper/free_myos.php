@@ -21,6 +21,7 @@ return [
 
     // ID of the max rarity a free MYO allows.
     // Enter "0" for no limitations.
+    // Notice: if the set rarity ID is not found, the lowest ranked rarity will be given to a MYO instead.
     'free_myos_rarity'   => 0,
 
     // 0: Subtypes are optional for free MYOs,

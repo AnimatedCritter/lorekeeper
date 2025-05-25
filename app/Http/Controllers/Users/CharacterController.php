@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterDesignUpdate;
 use App\Models\Character\CharacterTransfer;
+use App\Models\Rarity;
 use App\Models\Species\Species;
 use App\Models\Species\Subtype;
 use App\Models\User\User;
@@ -130,6 +131,15 @@ class CharacterController extends Controller {
      */
     public function postCreateFreeMyo(Request $request, CharacterManager $service)
     {
+        // Check if the configured rarity exsists. If not, fall back onto the lowest-ranked rarity.
+        $rarities = Rarity::orderBy('sort')->get();
+        $freeMyoRarity = config('lorekeeper.free_myos.free_myos_rarity');
+        if ($freeMyoRarity == 0 || $rarities->where('id', $freeMyoRarity)->count()) {
+            $rarityId = config('lorekeeper.free_myos.free_myos_rarity');
+        } else {
+            $rarityId = $rarities->first()->id;
+        }
+
         $request->validate(Character::$myoRules);
         $data = $request->only([
             'name', 'species_id', 'subtype_id',
@@ -144,7 +154,7 @@ class CharacterController extends Controller {
             'is_giftable' => config('lorekeeper.free_myos.free_myos_is_giftable'),
             'is_tradeable' => config('lorekeeper.free_myos.free_myos_is_tradeable'),
             'is_sellable' => config('lorekeeper.free_myos.free_myos_is_resellable'),
-            'rarity_id' => config('lorekeeper.free_myos.free_myos_rarity'),
+            'rarity_id' => $rarityId,
             'is_visible' => 1,
         ];
 
