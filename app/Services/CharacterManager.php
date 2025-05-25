@@ -87,7 +87,7 @@ class CharacterManager extends Service {
                 throw new \Exception("Free MYO slot creation is currently closed.");
             }
 
-            if ($isFreeMyo && UserSettings::find($data['user_id'])->pluck('free_myos_made')->first() >= Settings::get('free_myos_max_number') && Settings::get('free_myos_max_number') != 0) {
+            if ($isFreeMyo && UserSettings::find($data['user_id'])->pluck('free_myos_made')->first() >= config('lorekeeper.free_myos.free_myos_max_number') && config('lorekeeper.free_myos.free_myos_max_number') != 0) {
                 throw new \Exception("You have already created the maximum amount of free MYO slots.");
             }
 

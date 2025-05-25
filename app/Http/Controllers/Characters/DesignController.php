@@ -259,7 +259,7 @@ class DesignController extends Controller {
       $r = CharacterDesignUpdate::find($id);
       $isFreeMyo = Character::where('id', $r->character_id)->pluck('is_free_myo')->first();
       $hasSubtypeUsable = Subtype::visible()->where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0;
-      $requireSubtype = Settings::get('free_myos_require_subtype');
+      $requireSubtype = config('lorekeeper.free_myos.free_myos_require_subtype');
 
       // display available subtypes in the dropdown
       if (!$isFreeMyo) {

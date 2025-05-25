@@ -45,21 +45,20 @@ class CharacterController extends Controller {
     public function getCreateFreeMyo()
     {
         $closed = !Settings::get('free_myos_open');
-        $hasMaxNumber = Settings::get('free_myos_max_number') != 0;
-        $maxNumber = Settings::get('free_myos_max_number');
+        $hasMaxNumber = config('lorekeeper.free_myos.free_myos_max_number') != 0;
+        $maxNumber = config('lorekeeper.free_myos.free_myos_max_number');
 
         // slot stats and settings
-        $isGiftable = Settings::get('free_myos_is_giftable');
-        $isTradeable = Settings::get('free_myos_is_tradeable');
-        $isResellable = Settings::get('free_myos_is_resellable');
-        $hasRarity = Settings::get('free_myos_rarity') != 0;
-        $rarity = Settings::get('free_myos_rarity');
+        $isGiftable = config('lorekeeper.free_myos.free_myos_is_giftable');
+        $isTradeable = config('lorekeeper.free_myos.free_myos_is_tradeable');
+        $isResellable = config('lorekeeper.free_myos.free_myos_is_resellable');
+        $rarity = config('lorekeeper.free_myos.free_myos_rarity');
+        $hasRarity = config('lorekeeper.free_myos.free_myos_rarity') != 0;
 
         // get available species and subtypes
-        $requireSubtype = Settings::get('free_myos_require_subtype');
-        $inactiveMyoId = Character::where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1)->pluck('id');
         $hasSpeciesUsable = Species::visible()->where('is_free_myo_usable', 1)->count() != 0;
         $hasSubtypeUsable = Subtype::visible()->where('is_free_myo_usable', 1)->count() != 0;
+        $requireSubtype = config('lorekeeper.free_myos.free_myos_require_subtype');
         $inactiveMyoId = Character::visible()->where('user_id', Auth::user()->id)->where('is_myo_slot', 1)->where('is_free_myo', 1)->pluck('id');
         $listInactiveMyos = array();
         foreach($inactiveMyoId as $myoId) {
@@ -100,8 +99,8 @@ class CharacterController extends Controller {
      */
     public function getCreateCharacterMyoSubtype(Request $request) {
       $species = $request->input('species');
-      $requireSubtype = Settings::get('free_myos_require_subtype');
       $hasSubtypeUsable = Subtype::visible()->where('species_id','=',$species)->where('is_free_myo_usable', 1)->count() != 0;
+      $requireSubtype = config('lorekeeper.free_myos.free_myos_require_subtype');
 
       // select subtype dropdown options
       if($hasSubtypeUsable && !$requireSubtype){
